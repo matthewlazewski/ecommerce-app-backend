@@ -1,40 +1,20 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-
+const express = require("express");
 const app = express();
+const cors = require("cors");
+const PORT = 4000;
+const mongoose = require("mongoose");
+app.use(cors());
 
-const corsOptions = {
-    origin: "http://localhost:8081"
-};
+mongoose.connect("mongodb://127.0.0.1:27017/details", {
+  useNewUrlParser: true
+});
 
-app.use(cors(corsOptions));
+const connection = mongoose.connection;
 
-app.use(bodyParser.json());
+connection.once("open", function() {
+  console.log("Connection with MongoDB was successful");
+});
 
-app.use(bodyParser.urlencoded({ extended: true }))
-
-const db = require('./app/models');
-db.mongoose
-    .connect(db.url, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    })
-    .then(() => {
-        console.log("Connected");
-    })
-    .catch(err => {
-        console.log("Cannot connect", err);
-        process.exit();
-    })
-
-app.get("/", (req, res) => {
-    res.json({ message: "Welcome"})
-})
-
-require('./app/routes/item.routes')(app);
-
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`)
-})
+app.listen(PORT, function() {
+  console.log("Server is running on Port: " + PORT);
+});
