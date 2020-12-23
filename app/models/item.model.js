@@ -1,7 +1,5 @@
 module.exports = mongoose => {
-    const Item = mongoose.model(
-        "item",
-        mongoose.Schema(
+    const schema = mongoose.Schema(
             {
                 name: String,
                 description: String,
@@ -9,8 +7,7 @@ module.exports = mongoose => {
                 category: String
             },
             { timestamps: true }
-        )
-    );
+        );
 
     schema.method("toJSON", function() {
         const { __v, _id, ...object } = this.toObject();
