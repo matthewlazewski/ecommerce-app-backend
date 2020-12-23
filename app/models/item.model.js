@@ -1,5 +1,5 @@
 module.exports = mongoose => {
-    const schema = mongoose.model(
+    const Item = mongoose.model(
         "item",
         mongoose.Schema(
             {
